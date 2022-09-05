@@ -20,6 +20,11 @@ public class UrlsService {
         this.urlsRepository = urlsRepository;
     }
 
+    /**
+     * The method generates and adds a new Url object to the DB by long url
+     * @param longUrl long url
+     * @return short url
+     */
     @Transactional
     public String addUrl(String longUrl) {
         if(urlsRepository.findByLongUrl(longUrl).isPresent())
@@ -31,6 +36,11 @@ public class UrlsService {
         return url.getShortUrl();
     }
 
+    /**
+     * The method generates a short url as the minimal part of the long url's sha256 hash
+     * @param longUrl original url
+     * @return short url
+     */
     private String shortenUrl(String longUrl) {
         String fullHash = Hashing.sha256().hashString(longUrl, StandardCharsets.UTF_8).toString();
         StringBuilder partHash = new StringBuilder();
@@ -40,6 +50,11 @@ public class UrlsService {
         return partHash.toString();
     }
 
+    /**
+     * The method returns a long url by the short url
+     * @param shortUrl short url
+     * @return long url
+     */
     public String getLongUrl(String shortUrl) {
         Optional<Url> url = urlsRepository.findByShortUrl(shortUrl);
         if(url.isPresent()) return url.get().getLongUrl();
