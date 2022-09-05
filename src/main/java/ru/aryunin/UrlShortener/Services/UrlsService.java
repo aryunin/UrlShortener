@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.aryunin.UrlShortener.Models.Url;
 import ru.aryunin.UrlShortener.Repositories.UrlsRepository;
+import ru.aryunin.UrlShortener.Utils.LongUrlAlreadyExistsException;
 import ru.aryunin.UrlShortener.Utils.ShortUrlNotFoundException;
 
 import java.nio.charset.StandardCharsets;
@@ -21,6 +22,8 @@ public class UrlsService {
 
     @Transactional
     public String addUrl(String longUrl) {
+        if(urlsRepository.findByLongUrl(longUrl).isPresent())
+            throw new LongUrlAlreadyExistsException("This long URL is already exists");
         Url url = new Url();
         url.setLongUrl(longUrl);
         url.setShortUrl(shortenUrl(longUrl));
@@ -40,6 +43,6 @@ public class UrlsService {
     public String getLongUrl(String shortUrl) {
         Optional<Url> url = urlsRepository.findByShortUrl(shortUrl);
         if(url.isPresent()) return url.get().getLongUrl();
-        else throw new ShortUrlNotFoundException("That short URL does not exist!");
+        else throw new ShortUrlNotFoundException("This short URL does not exist!");
     }
 }
