@@ -15,11 +15,13 @@ public class ShortenerController {
         this.urlsService = urlsService;
     }
 
+    // Adding a new url to the DB and getting its short version as response
     @PostMapping
     public String addUrl(@RequestBody String longUrl) {
         return urlsService.addUrl(longUrl);
     }
 
+    // Getting the full URL by its short version
     @GetMapping("/{shortUrl}")
     @ResponseBody
     public String getLongUrl(@PathVariable String shortUrl) {
