@@ -1,7 +1,10 @@
 package ru.aryunin.UrlShortener.Controllers;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.aryunin.UrlShortener.Services.UrlsService;
+import ru.aryunin.UrlShortener.Utils.ShortUrlNotFoundException;
 
 @RestController
 public class ShortenerController {
@@ -20,5 +23,10 @@ public class ShortenerController {
     @ResponseBody
     public String getLongUrl(@PathVariable String shortUrl) {
         return urlsService.getLongUrl(shortUrl);
+    }
+
+    @ExceptionHandler
+    private ResponseEntity<String> handleException(ShortUrlNotFoundException e) {
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
 }
