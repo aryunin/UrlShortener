@@ -19,7 +19,9 @@ public class ShortenerController {
     // Adding a new url to the DB and getting its short version as response
     @PostMapping
     public String addUrl(@RequestBody String longUrl) {
-        return urlsService.addUrl(longUrl);
+        String code = urlsService.addUrl(longUrl);
+        String baseRoute = "http://localhost:8080";
+        return baseRoute + code;
     }
 
     // Getting the full URL by its short version
