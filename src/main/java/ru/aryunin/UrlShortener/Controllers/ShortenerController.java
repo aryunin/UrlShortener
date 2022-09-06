@@ -20,7 +20,7 @@ public class ShortenerController {
     @PostMapping
     public String addUrl(@RequestBody String longUrl) {
         String code = urlsService.addUrl(longUrl);
-        String baseRoute = "http://localhost:8080";
+        String baseRoute = "http://localhost:8080/";
         return baseRoute + code;
     }
 
