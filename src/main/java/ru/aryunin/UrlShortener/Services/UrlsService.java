@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.aryunin.UrlShortener.Models.Url;
 import ru.aryunin.UrlShortener.Repositories.UrlsRepository;
+import ru.aryunin.UrlShortener.Utils.EmptyUrlException;
 import ru.aryunin.UrlShortener.Utils.LongUrlAlreadyExistsException;
 import ru.aryunin.UrlShortener.Utils.ShortUrlNotFoundException;
 
@@ -27,6 +28,8 @@ public class UrlsService {
      */
     @Transactional
     public String addUrl(String longUrl) {
+        if(longUrl == null || longUrl.equals(""))
+            throw new EmptyUrlException("You should enter any long url");
         if(urlsRepository.findByLongUrl(longUrl).isPresent())
             throw new LongUrlAlreadyExistsException("This long URL is already exists");
         Url url = new Url();

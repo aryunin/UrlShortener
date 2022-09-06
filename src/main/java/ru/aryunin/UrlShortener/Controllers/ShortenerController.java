@@ -4,6 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.aryunin.UrlShortener.Services.UrlsService;
+import ru.aryunin.UrlShortener.Utils.EmptyUrlException;
 import ru.aryunin.UrlShortener.Utils.LongUrlAlreadyExistsException;
 import ru.aryunin.UrlShortener.Utils.ShortUrlNotFoundException;
 
@@ -35,6 +36,11 @@ public class ShortenerController {
 
     @ExceptionHandler
     private ResponseEntity<String> handleException(LongUrlAlreadyExistsException e) {
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler
+    private ResponseEntity<String> handleException(EmptyUrlException e) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
 }
